@@ -11,6 +11,12 @@ var Enemy = function(locationX, locationY, speed) {
     this.sprite = 'images/enemy-bug.png';
 };
 
+/*return NOT (
+		(Rect1.Bottom < Rect2.Top) OR
+		(Rect1.Top > Rect2.Bottom) OR
+		(Rect1.Left > Rect2.Right) OR
+		(Rect1.Right < Rect2.Left) )*/
+
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
@@ -23,7 +29,20 @@ Enemy.prototype.update = function(dt) {
         this.x = -101;
     }
     
+    this.checkCollision();
+    
     //console.log('called');
+};
+
+Enemy.prototype.checkCollision = function() {
+    if( ! ((this.y + 83 <= player.y) || 
+           (this.y >= player.y + 83) || 
+           (this.x >= player.x + 101) || 
+           (this.x + 101 <= player.x))
+           )
+           {
+                player.resetPlayer();
+           }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -49,7 +68,7 @@ Player.prototype.update = function(){
 };
 
 Player.prototype.resetPlayer = function(){
-    this.x = 200;
+    this.x = 202;
     this.y = 405;
 };
 
@@ -98,12 +117,12 @@ Player.prototype.handleInput = function(allowedKey){
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [
-    new Enemy(Math.floor(Math.random() * 505),62,60),
-    new Enemy(Math.floor(Math.random() * 505),145,120),
-    new Enemy(Math.floor(Math.random() * 505),228,240)
+    new Enemy(Math.floor(Math.random() * 505),68,60),
+    new Enemy(Math.floor(Math.random() * 505),151,120),
+    new Enemy(Math.floor(Math.random() * 505),234,240)
 ];
 
-var player = new Player(200,405);
+var player = new Player(202, 400);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
